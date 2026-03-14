@@ -51,22 +51,27 @@
               wayland
             ];
 
-          desktopItem = pkgs.makeDesktopItem {
-            name = pname;
-            exec = "${pname}";
-            comment = "Multi-platform ClashMeta proxy client";
-            desktopName = "FlClashX";
-            genericName = "Proxy Client";
-            categories = [
-              "Network"
-              "Utility"
-              "System"
-            ];
-            mimeTypes = [ ];
-            extraEntries = ''
-              StartupWMClass=FlClashX
-              Keywords=clash,proxy,vpn,tun,flclash
-            '';
+          passthru = {
+            desktopItem = pkgs.makeDesktopItem {
+              name = pname;
+              desktopName = "FlClashX";
+              exec = "${pname} %U";
+              icon = "network-proxy";
+              type = "Application";
+              comment = "Multi-platform ClashMeta proxy client";
+              genericName = "Proxy Client";
+              categories = [
+                "Network"
+                "Utility"
+                "System"
+              ];
+              startupWMClass = "FlClashX";
+              extraEntries = ''
+                Keywords=clash,proxy,vpn,tun,flclash,FlClashX
+                StartupNotify=true
+                Terminal=false
+              '';
+            };
           };
 
           meta = with pkgs.lib; {
