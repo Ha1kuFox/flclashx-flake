@@ -51,7 +51,7 @@
               wayland
             ];
 
-          desktopItem = pkgs.desktopIntegration {
+          desktopItem = pkgs.makeDesktopItem {
             name = pname;
             exec = "${pname}";
             comment = "Multi-platform ClashMeta proxy client";
