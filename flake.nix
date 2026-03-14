@@ -19,6 +19,7 @@
         pkgs = nixpkgs.legacyPackages.${system};
         pname = "FlClashX";
         version = "0.3.2";
+
         arch = if pkgs.stdenv.hostPlatform.isAarch64 then "arm64" else "amd64";
       in
       {
@@ -28,6 +29,8 @@
             url = "https://github.com/pluralplay/FlClashX/releases/download/v0.3.2/FlClashX-linux-${arch}.AppImage";
             hash = "sha256-RbL1M6WKsUoxt83kDmkjoWs2voIBzp9P4hbSn5MDBow=";
           };
+
+          nativeBuildInputs = [ pkgs.copyDesktopItems ];
 
           extraPkgs =
             pkgs: with pkgs; [
@@ -51,28 +54,18 @@
               wayland
             ];
 
-          passthru = {
-            desktopItem = pkgs.makeDesktopItem {
+          desktopItems = [
+            (pkgs.makeDesktopItem {
               name = pname;
               desktopName = "FlClashX";
               exec = "${pname} %U";
-              icon = "network-proxy";
               type = "Application";
+              terminal = false;
+              startupWMClass = "flclashx";
+              categories = [ "Utility" ];
               comment = "Multi-platform ClashMeta proxy client";
-              genericName = "Proxy Client";
-              categories = [
-                "Network"
-                "Utility"
-                "System"
-              ];
-              startupWMClass = "FlClashX";
-              extraEntries = ''
-                Keywords=clash,proxy,vpn,tun,flclash,FlClashX
-                StartupNotify=true
-                Terminal=false
-              '';
-            };
-          };
+            })
+          ];
 
           meta = with pkgs.lib; {
             description = "FlClashX proxy client (AppImage)";
@@ -87,7 +80,6 @@
 
         apps.default = flake-utils.lib.mkApp {
           drv = self.packages.${system}.default;
-          desktopItem = self.packages.${system}.default.desktopItem;
         };
       }
     );
