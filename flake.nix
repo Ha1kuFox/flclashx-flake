@@ -54,6 +54,17 @@
               wayland
             ];
 
+          extraInstallCommands = ''
+            mkdir -p $out/share/applications
+
+            cp -r ${
+              pkgs.buildEnv {
+                name = "desktop-items";
+                paths = desktopItems;
+              }
+            }/share/applications/* $out/share/applications/
+          '';
+
           desktopItems = [
             (pkgs.makeDesktopItem {
               name = pname;
