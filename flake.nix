@@ -51,6 +51,24 @@
               wayland
             ];
 
+          desktopItem = pkgs.desktopIntegration {
+            name = pname;
+            exec = "${pname}";
+            comment = "Multi-platform ClashMeta proxy client";
+            desktopName = "FlClashX";
+            genericName = "Proxy Client";
+            categories = [
+              "Network"
+              "Utility"
+              "System"
+            ];
+            mimeTypes = [ ];
+            extraEntries = ''
+              StartupWMClass=FlClashX
+              Keywords=clash,proxy,vpn,tun,flclash
+            '';
+          };
+
           meta = with pkgs.lib; {
             description = "FlClashX proxy client (AppImage)";
             homepage = "https://github.com/pluralplay/FlClashX";
